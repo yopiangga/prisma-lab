@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import "./App.css";
 import { UserContext } from "./context/UserContext";
 import AuthRouterPage from "./router/AuthRouter";
-import UserRouterPage from "./router/UserRouter";
+import DoctorRouterPage from "./router/DoctorRouter";
 import { AppContextProvider } from "./context/AppContextProvider";
 import { cookies } from "./services/config";
 import LoadComponent from "./components/load";
@@ -53,8 +53,8 @@ function UserManager() {
     );
   } else if (user == null && load == false) {
     return <AuthRouterPage />;
-  } else if (user.role == "user") {
-    return <UserRouterPage />;
+  } else if (user.role == "doctor") {
+    return <DoctorRouterPage />;
   } else {
     return <h1>Something went wrong</h1>;
   }

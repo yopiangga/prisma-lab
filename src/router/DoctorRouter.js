@@ -3,7 +3,7 @@ import { UserLayout } from "src/layouts/user";
 import { HomePage } from "src/pages/home";
 import { StartPage } from "src/pages/start";
 
-export default function UserRouterPage() {
+export default function DoctorRouterPage() {
   return (
     <UserLayout>
       <BrowserRouter>

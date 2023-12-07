@@ -45,17 +45,16 @@ export function HomePage() {
     <div className="min-h-screen">
       <div className="mt-6 px-4 flex flex-row items-center justify-between">
         <div className="">
-          <h4 className="text-2xl text-black font-bold">Good Morning</h4>
-          <h4 className="text-md text-black">Monday, 06 November 2023</h4>
+          <h3 className="f-h3 text-black font-bold">Good Morning</h3>
+          <p className="f-p1-r text-black">Monday, 06 November 2023</p>
         </div>
         <div className="">
           <img src={imageUser} className="w-10 h-10" />
-          {/* <Image source={imageUser} className="w-10 h-10" /> */}
         </div>
       </div>
 
-      <div className="w-full mt-5">
-        <div className="px-4">
+      <div className="w-full mt-5 flex justify-center">
+        <div className="w-11/12 overflow-scroll flex gap-1">
           <BadgeComponent title="Overview" status={true} />
           <BadgeComponent title="Daily" status={false} />
           <BadgeComponent title="Weekly" status={false} />
@@ -86,7 +85,7 @@ export function HomePage() {
         </div>
       </div>
 
-      <div className="mt-5 px-4 grid grid-cols-2">
+      <div className="mt-5 px-4 grid grid-cols-2 gap-3">
         {data.map((item, index) => {
           return (
             <CardComponent
@@ -98,20 +97,6 @@ export function HomePage() {
             />
           );
         })}
-        {/* <FlatList
-          columnWrapperStyle={{ justifyContent: "space-between", gap: 16 }}
-          data={data}
-          renderItem={({ item }) => (
-            <CardComponent
-              id={item.id}
-              title={item.title}
-              subTitle={item.subTitle}
-              value={item.value}
-            />
-          )}
-          numColumns={2}
-          keyExtractor={(item) => item.id}
-        /> */}
       </div>
     </div>
   );
@@ -119,11 +104,10 @@ export function HomePage() {
 
 const CardComponent = ({ id, title, subTitle, value }) => {
   return (
-    <div className={`bg-white p-4 mb-4 rounded-lg flex-1`}>
+    <div className={`bg-white p-4 rounded-lg flex-1 shadow-s1`}>
       <h4 className="text-black font-bold text-sm">{title}</h4>
       <h5 className="text-black text-xs">{subTitle}</h5>
       <div className="flex flex-row items-center mt-2">
-        {/* <Image source={iconUser} /> */}
         <img src={iconUser} />
         <h4 className="text-black text-lg font-bold text-center ml-2">
           {value}
@@ -139,10 +123,10 @@ const BadgeComponent = ({ title, status, callback }) => {
       <div
         className={`${
           status ? "bg-primary-surface" : "bg-white"
-        } rounded-full px-5 py-2 mr-1`}
+        } rounded-full px-5 py-2`}
       >
         <h4
-          className={`text-center ${
+          className={`text-center f-p1-r ${
             status ? "text-primary-main" : "text-black"
           }`}
         >
