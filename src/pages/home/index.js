@@ -1,8 +1,12 @@
-import imageUser from "src/assets/images/user.png";
+import { useContext } from "react";
+import imageUser from "src/assets/icons/avatar.png";
 import iconUser from "src/assets/icons/user.png";
 import { BottomNavbarComponent } from "src/components/navbar/BottomNavbarComponent";
+import { UserContext } from "src/context/UserContext";
 
 export function HomePage() {
+  const { user } = useContext(UserContext);
+
   const data = [
     {
       id: 1,
@@ -46,11 +50,23 @@ export function HomePage() {
     <div className="min-h-screen">
       <div className="mt-6 px-4 flex flex-row items-center justify-between">
         <div className="">
-          <h3 className="f-h3 text-black font-bold">Good Morning</h3>
-          <p className="f-p1-r text-black">Monday, 06 November 2023</p>
+          <h3 className="f-h3 text-black font-bold line-clamp-1">
+            Welcome, {user.name ?? "User"}
+          </h3>
+          <p className="f-p1-r text-black">
+            {new Date().toLocaleString("en-us", {
+              weekday: "long",
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
+          </p>
         </div>
         <div className="">
-          <img src={imageUser} className="w-10 h-10" />
+          <img
+            src={user.image ?? imageUser}
+            className="w-10 h-10 rounded-full"
+          />
         </div>
       </div>
 
