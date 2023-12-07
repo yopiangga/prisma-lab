@@ -19,8 +19,8 @@ export function InputDefault({
         {label}
       </label>
       <input
-        className={`f-p1-r w-full border rounded-lg px-3 py-3 outline-none mt-2 ${
-          color == "dark" ? "border-black" : "border-primary-main"
+        className={`f-p1-r w-full border rounded-lg px-3 py-3 focus:border-primary-main outline-none mt-2 ${
+          color == "dark" ? "border-slate-400" : "border-primary-main"
         }`}
         name={name}
         value={value}

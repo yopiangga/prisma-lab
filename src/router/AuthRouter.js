@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { UserLayout } from "src/layouts/user";
-import { HomePage } from "src/pages/home";
+import { SignInPage } from "src/pages/signin";
 import { StartPage } from "src/pages/start";
 
 export default function AuthRouterPage() {
@@ -8,7 +8,7 @@ export default function AuthRouterPage() {
     <UserLayout>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<SignInPage />} />
 
           <Route path="*" element={<StartPage />} exact />
         </Routes>
