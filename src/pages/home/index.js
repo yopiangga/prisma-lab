@@ -1,5 +1,6 @@
 import imageUser from "src/assets/images/user.png";
 import iconUser from "src/assets/icons/user.png";
+import { BottomNavbarComponent } from "src/components/navbar/BottomNavbarComponent";
 
 export function HomePage() {
   const data = [
@@ -97,6 +98,14 @@ export function HomePage() {
             />
           );
         })}
+      </div>
+
+      <br />
+      <br />
+      <br />
+
+      <div className="w-full fixed bottom-0">
+        <BottomNavbarComponent />
       </div>
     </div>
   );

@@ -1,18 +1,33 @@
 import { useState } from "react";
 import imageUser from "src/assets/images/user.png";
+import { FiArrowLeft, FiHome } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+import { NavbarComponent } from "src/components/navbar";
+import { BottomNavbarComponent } from "src/components/navbar/BottomNavbarComponent";
 
 export function MedicalRecordPage() {
+  const navigate = useNavigate();
+
   const [toggle, setToggle] = useState(1);
 
   return (
     <div className="min-h-screen">
-      <div className="py-3">
-        <h4 className="text-center text-lg text-black font-semibold">
-          Medical Records
-        </h4>
+      <div className="w-full">
+        <NavbarComponent
+          title="Medical Records"
+          type="dark"
+          leftIcon={FiArrowLeft}
+          handleLeft={() => {
+            navigate(-1);
+          }}
+          rightIcon={FiHome}
+          handleRight={() => {
+            navigate("/");
+          }}
+        />
       </div>
 
-      <div className="px-4 w-full mt-2">
+      <div className="px-4 w-full mt-4">
         <div className="flex flex-row bg-primary-main p-1 rounded-md">
           <ToggleButton
             title="Un-Classified"
@@ -32,24 +47,47 @@ export function MedicalRecordPage() {
         {Array(10)
           .fill(0)
           .map((_, i) => (
-            <PatientComponent key={i} />
+            <PatientComponent
+              key={i}
+              data={{
+                id: i,
+                name: "Alfian Prisma Yopiangga",
+                status: "Normal",
+              }}
+              callback={(data) => {
+                navigate("/medical-record/" + data.id);
+              }}
+            />
           ))}
+      </div>
+
+      <br />
+      <br />
+      <br />
+
+      <div className="w-full fixed bottom-0">
+        <BottomNavbarComponent />
       </div>
     </div>
   );
 }
 
-const PatientComponent = ({ data }) => {
+const PatientComponent = ({ data, callback }) => {
   return (
-    <div className="flex flex-row items-center py-2 gap-4">
+    <button
+      onClick={() => {
+        callback(data);
+      }}
+      className="flex flex-row items-center py-2 gap-4 w-full"
+    >
       <div>
-        <img src={imageUser} />
+        <img src={imageUser} className="w-12" />
       </div>
-      <div className="">
+      <div className="w-full text-left">
         <h4 className="text-black f-p1-m font-bold">Alfian Prisma Yopiangga</h4>
         <h4 className="text-black f-p2-r">Normal</h4>
       </div>
-    </div>
+    </button>
   );
 };
 
@@ -57,12 +95,12 @@ const ToggleButton = ({ title, status, callback }) => {
   return (
     <button className="w-1/2" onClick={() => callback()}>
       <div
-        className={`${status ? "bg-primary-main" : "bg-white"} py-2 rounded-md`}
+        className={`${status ? "bg-white" : "bg-primary-main"} py-2 rounded-md`}
       >
         <h4
           className={`${
-            status ? "text-white" : "text-primary-main"
-          } text-center f-p1-m`}
+            status ? "text-primary-main" : "text-white"
+          } text-center f-p1-r`}
         >
           {title}
         </h4>
