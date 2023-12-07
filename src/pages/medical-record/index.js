@@ -1,16 +1,19 @@
+import { useState } from "react";
 import imageUser from "src/assets/images/user.png";
 
 export function MedicalRecordPage() {
+  const [toggle, setToggle] = useState(1);
+
   return (
     <div className="min-h-screen">
       <div className="py-3">
         <h4 className="text-center text-lg text-black font-semibold">
-          Patients
+          Medical Records
         </h4>
       </div>
 
       <div className="px-4 w-full mt-2">
-        <div className="flex flex-row bg-gray-50 py-1 px-1 rounded-md">
+        <div className="flex flex-row bg-primary-main p-1 rounded-md">
           <ToggleButton
             title="Un-Classified"
             status={1 == toggle}
@@ -38,16 +41,13 @@ export function MedicalRecordPage() {
 
 const PatientComponent = ({ data }) => {
   return (
-    <div className="flex flex-row items-center py-2">
+    <div className="flex flex-row items-center py-2 gap-4">
       <div>
         <img src={imageUser} />
-        {/* <Image source={imageUser} /> */}
       </div>
-      <div className="ml-4">
-        <h4 className="text-black text-sm font-bold">
-          Alfian Prisma Yopiangga
-        </h4>
-        <h4 className="text-black text-sm mt-1">Normal</h4>
+      <div className="">
+        <h4 className="text-black f-p1-m font-bold">Alfian Prisma Yopiangga</h4>
+        <h4 className="text-black f-p2-r">Normal</h4>
       </div>
     </div>
   );
@@ -62,7 +62,7 @@ const ToggleButton = ({ title, status, callback }) => {
         <h4
           className={`${
             status ? "text-white" : "text-primary-main"
-          } text-center`}
+          } text-center f-p1-m`}
         >
           {title}
         </h4>
