@@ -6,6 +6,7 @@ import DoctorRouterPage from "./router/DoctorRouter";
 import { AppContextProvider } from "./context/AppContextProvider";
 import { cookies } from "./services/config";
 import LoadComponent from "./components/load";
+import { UserServices } from "./services/UserServices";
 
 function App() {
   return (
@@ -18,32 +19,32 @@ function App() {
 export default App;
 
 function UserManager() {
-  // const userServices = new UserServices();
+  const userServices = new UserServices();
 
   const { user, setUser } = useContext(UserContext);
   const [load, setLoad] = useState(false);
 
   useEffect(() => {
-    // fetch();
+    fetch();
   }, []);
 
-  // async function fetch() {
-  //   const token = cookies?.token ?? "";
+  async function fetch() {
+    const token = cookies?.token ?? "";
 
-  //   if (token === "") {
-  //     setUser(null);
-  //   } else {
-  //     const res = await userServices.GetProfile();
-  //     if (res.code === 200) {
-  //       // console.log(res.data);
-  //       setUser(res.data);
-  //     } else {
-  //       setUser(null);
-  //     }
-  //   }
+    if (token === "" || token === undefined) {
+      setUser(null);
+    } else {
+      const res = await userServices.myProfile();
+      if (res) {
+        console.log(res.data);
+        setUser(res.data);
+      } else {
+        setUser(null);
+      }
+    }
 
-  //   setLoad(false);
-  // }
+    setLoad(false);
+  }
 
   if (load) {
     return (

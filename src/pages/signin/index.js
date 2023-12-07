@@ -2,10 +2,17 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import imageLogo from "src/assets/images/logo.png";
 import { InputDefault } from "src/components/input/input-default";
+import { AuthServices } from "src/services/AuthServices";
 
 export function SignInPage() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ email: "", password: "" });
+
+  const authServices = new AuthServices();
+
+  const [formData, setFormData] = useState({
+    email: "doctor1@email.com",
+    password: "12345678",
+  });
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -13,9 +20,15 @@ export function SignInPage() {
     setFormData({ ...formData, [name]: value });
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    console.log(formData);
+
+    const res = await authServices.SignIn({ ...formData });
+
+    if (res) {
+      document.cookie = `token=${res.token}`;
+      window.location.href = "/";
+    }
   }
 
   return (
