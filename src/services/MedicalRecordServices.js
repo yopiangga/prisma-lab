@@ -36,7 +36,7 @@ export class MedicalRecordServices {
     }
   }
 
-  async getMedicalRecordByPatientId({ id }) {
+  async getMedicalRecordsByPatientId({ id }) {
     try {
       const res = await axios.get(`${baseUrl}/medical-records/patient/${id}`, {
         headers,

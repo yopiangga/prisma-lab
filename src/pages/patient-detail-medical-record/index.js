@@ -98,7 +98,7 @@ export function PatientDetailMedicalRecord() {
       <div className="mt-6 w-11/12">
         <button
           onClick={() => {
-            navigate("/medical-record/patient/1");
+            navigate("/medical-record/patient/" + data?.patient?.id);
           }}
           className="py-3 px-5 bg-primary-main border border-primary-main rounded-full f-p1-m text-white w-full"
         >
