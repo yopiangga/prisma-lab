@@ -36,7 +36,6 @@ function UserManager() {
     } else {
       const res = await userServices.myProfile();
       if (res) {
-        console.log(res.data);
         setUser(res.data);
       } else {
         setUser(null);

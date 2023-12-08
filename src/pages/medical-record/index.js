@@ -1,14 +1,30 @@
-import { useState } from "react";
-import imageUser from "src/assets/images/user.png";
+import { useEffect, useState } from "react";
+import imageUser from "src/assets/icons/avatar.png";
 import { FiArrowLeft, FiHome } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { NavbarComponent } from "src/components/navbar";
 import { BottomNavbarComponent } from "src/components/navbar/BottomNavbarComponent";
+import { MedicalRecordServices } from "src/services/MedicalRecordServices";
 
 export function MedicalRecordPage() {
   const navigate = useNavigate();
+  const medicalRecordServices = new MedicalRecordServices();
+
+  const [data, setData] = useState([]);
 
   const [toggle, setToggle] = useState(1);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    const res = await medicalRecordServices.getMedicalRecords();
+    if (res) {
+      console.log(res.data);
+      setData(res.data);
+    }
+  };
 
   return (
     <div className="min-h-screen">
@@ -44,21 +60,19 @@ export function MedicalRecordPage() {
 
       <div className="px-4 mt-4">
         <h4 className="text-black text-sm font-bold mb-2">List Patients</h4>
-        {Array(10)
-          .fill(0)
-          .map((_, i) => (
-            <PatientComponent
-              key={i}
-              data={{
-                id: i,
-                name: "Alfian Prisma Yopiangga",
-                status: "Normal",
-              }}
-              callback={(data) => {
-                navigate("/medical-record/" + data.id);
-              }}
-            />
-          ))}
+        {data.map((e, i) => (
+          <PatientComponent
+            key={i}
+            data={{
+              id: e.id,
+              name: e.patient_name,
+              status: e.diagnosis_ai,
+            }}
+            callback={(data) => {
+              navigate("/medical-record/" + data.id);
+            }}
+          />
+        ))}
       </div>
 
       <br />
@@ -81,11 +95,11 @@ const PatientComponent = ({ data, callback }) => {
       className="flex flex-row items-center py-2 gap-4 w-full"
     >
       <div>
-        <img src={imageUser} className="w-12" />
+        <img src={imageUser} className="w-12 rounded-full" />
       </div>
       <div className="w-full text-left">
-        <h4 className="text-black f-p1-m font-bold">Alfian Prisma Yopiangga</h4>
-        <h4 className="text-black f-p2-r">Normal</h4>
+        <h4 className="text-black f-p1-m font-bold">{data.name}</h4>
+        <h4 className="text-black f-p2-r">{data.diagnosis_ai || "-"}</h4>
       </div>
     </button>
   );

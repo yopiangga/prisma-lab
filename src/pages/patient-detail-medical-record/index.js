@@ -1,9 +1,27 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { NavbarComponent } from "src/components/navbar";
 import { FiArrowLeft, FiHome } from "react-icons/fi";
+import { MedicalRecordServices } from "src/services/MedicalRecordServices";
+import { useEffect, useState } from "react";
 
 export function PatientDetailMedicalRecord() {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const medicalRecordServices = new MedicalRecordServices();
+
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    const res = await medicalRecordServices.getMedicalRecordById({ id });
+    if (res) {
+      console.log(res.data);
+      setData(res.data);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center">
@@ -23,21 +41,23 @@ export function PatientDetailMedicalRecord() {
       </div>
 
       <div className="mt-4 w-11/12">
-        <img src="https://st4.depositphotos.com/14431644/22076/i/450/depositphotos_220767694-stock-photo-handwriting-text-writing-example-concept.jpg" />
+        <img src={data?.medicalRecord?.image || "-"} />
       </div>
 
       <div className="mt-4 w-11/12">
         <div className="flex justify-between items-center">
           <div>
             <h4 className="text-black f-p1-r font-bold mb-2">
-              Stroke Ischemic
+              {data?.medicalRecord?.diagnosis_ai || "-"}
             </h4>
             <p className="text-slate-400 f-p2-r">AI Prediction</p>
           </div>
         </div>
         <div className="flex justify-between items-center mt-4">
           <div>
-            <h4 className="text-black f-p1-r font-bold mb-2">Not Stroke</h4>
+            <h4 className="text-black f-p1-r font-bold mb-2">
+              {data?.medicalRecord?.diagnosis_doctor || "-"}
+            </h4>
             <p className="text-slate-400 f-p2-r">Diagnosis by Doctor</p>
           </div>
           <div>
@@ -58,14 +78,21 @@ export function PatientDetailMedicalRecord() {
       </div>
 
       <div className="mt-4 w-11/12 flex flex-col gap-4">
-        <ListLabel label="Doctor" value="Dr Alfian Prisma Yopianga" />
-        <ListLabel label="Hospital" value="RS Siloam Surabaya" />
-        <ListLabel label="Patient" value="Alfian Y" />
-        <ListLabel label="Time" value="07 December 2023" />
+        <ListLabel label="Doctor" value={data?.doctor?.name} />
+        <ListLabel label="Hospital" value={data?.hospital?.name} />
+        <ListLabel label="Patient" value={data?.patient?.name} />
         <ListLabel
-          label="Note"
-          value="Patient stroke with type ischemic djhdns sn c sjc sjncsjncj"
+          label="Time"
+          value={new Date(data?.medicalRecord?.created_at).toLocaleDateString(
+            "en-GB",
+            {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            }
+          )}
         />
+        <ListLabel label="Note" value={data?.medicalRecord?.note || "-"} />
       </div>
 
       <div className="mt-6 w-11/12">
