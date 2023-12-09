@@ -60,7 +60,27 @@ export function MedicalRecordPage() {
 
       <div className="px-4 mt-4">
         <h4 className="text-black text-sm font-bold mb-2">List Patients</h4>
-        {data.map((e, i) => (
+        {data.map((e, i) => {
+          if (
+            (toggle == 1 && e.diagnosis_doctor == "") ||
+            (toggle == 2 && e.diagnosis_doctor != "")
+          )
+            return (
+              <PatientComponent
+                key={i}
+                data={{
+                  id: e.id,
+                  name: e.patient_name,
+                  status: e.diagnosis_ai,
+                }}
+                callback={(data) => {
+                  navigate("/medical-record/" + data.id);
+                }}
+              />
+            );
+        })}
+
+        {/* {data.map((e, i) => (
           <PatientComponent
             key={i}
             data={{
@@ -72,7 +92,7 @@ export function MedicalRecordPage() {
               navigate("/medical-record/" + data.id);
             }}
           />
-        ))}
+        ))} */}
       </div>
 
       <br />
