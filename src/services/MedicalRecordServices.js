@@ -69,4 +69,23 @@ export class MedicalRecordServices {
       return false;
     }
   }
+
+  async diagnosisByDoctor({ id, data }) {
+    try {
+      const res = await axios.put(
+        `${baseUrl}/medical-records/diagnosis-by-doctor/${id}`,
+        data,
+        { headers }
+      );
+      if (res.status === 200) {
+        return res.data;
+      } else {
+        handleOtherStatusCodes(res.status);
+        return false;
+      }
+    } catch (err) {
+      handleAxiosError(err);
+      return false;
+    }
+  }
 }

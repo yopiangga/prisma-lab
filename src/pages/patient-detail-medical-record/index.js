@@ -3,13 +3,19 @@ import { NavbarComponent } from "src/components/navbar";
 import { FiArrowLeft, FiHome } from "react-icons/fi";
 import { MedicalRecordServices } from "src/services/MedicalRecordServices";
 import { useEffect, useState } from "react";
+import { InputSelect } from "src/components/input/input-select";
+import { InputTextarea } from "src/components/input/input-textarea";
+import { ButtonComponent, ButtonOutlineComponent } from "src/components/button";
 
 export function PatientDetailMedicalRecord() {
   const navigate = useNavigate();
   const { id } = useParams();
   const medicalRecordServices = new MedicalRecordServices();
 
+  const [editToggle, setEditToggle] = useState(false);
+
   const [data, setData] = useState({});
+  const [tempData, setTempData] = useState({});
 
   useEffect(() => {
     fetchData();
@@ -18,13 +24,79 @@ export function PatientDetailMedicalRecord() {
   const fetchData = async () => {
     const res = await medicalRecordServices.getMedicalRecordById({ id });
     if (res) {
-      console.log(res.data);
+      setTempData(res.data.medicalRecord);
       setData(res.data);
     }
   };
 
+  function handleChange(e) {
+    setTempData({ ...tempData, [e.target.name]: e.target.value });
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const res = await medicalRecordServices.diagnosisByDoctor({
+      id,
+      data: {
+        idPatient: tempData.id_patient,
+        idDoctor: tempData.id_doctor,
+        idHospital: tempData.id_hospital,
+        diagnosisDoctor: tempData.diagnosis_doctor,
+        description: tempData.description,
+      },
+    });
+    if (res) {
+      setEditToggle(false);
+      fetchData();
+    }
+  }
+
   return (
-    <div className="min-h-screen flex flex-col items-center">
+    <div className="min-h-screen flex flex-col items-center relative">
+      {editToggle && (
+        <div className="fixed w-full h-full bg-black bg-opacity-40 flex justify-center items-center">
+          <form
+            onSubmit={handleSubmit}
+            className="bg-white rounded-lg w-11/12 p-5"
+          >
+            <h4 className="f-h4 text-center">Diagnosis by Doctor</h4>
+            <div className="w-full mt-2">
+              <InputSelect
+                color="dark"
+                label={"Type Stroke"}
+                name="diagnosis_doctor"
+                value={tempData.diagnosis_doctor}
+                handleChange={handleChange}
+                options={[
+                  { label: "Hemorrhagic", value: "hemorrhagic" },
+                  { label: "Ischemic", value: "ischemic" },
+                  { label: "Not Stroke", value: "normal" },
+                ]}
+              />
+            </div>
+            <div className="w-full mt-2">
+              <InputTextarea
+                color="dark"
+                label={"Description"}
+                name={"description"}
+                value={tempData.description}
+                handleChange={handleChange}
+              />
+            </div>
+            <div className="flex flex-row justify-center gap-4 mt-4">
+              <ButtonOutlineComponent
+                title="Cancel"
+                type="button"
+                action={() => {
+                  setEditToggle(false);
+                }}
+              />
+              <ButtonComponent title="Submit" type="submit" />
+            </div>
+          </form>
+        </div>
+      )}
+
       <div className="w-full">
         <NavbarComponent
           title="Result CT Scan"
@@ -61,7 +133,12 @@ export function PatientDetailMedicalRecord() {
             <p className="text-slate-400 f-p2-r">Diagnosis by Doctor</p>
           </div>
           <div>
-            <button className="py-2 px-5 bg-white border border-primary-main rounded-full f-p2-r text-primary-main">
+            <button
+              onClick={() => {
+                setEditToggle(true);
+              }}
+              className="py-2 px-5 bg-white border border-primary-main rounded-full f-p2-r text-primary-main"
+            >
               Edit
             </button>
           </div>
