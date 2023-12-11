@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { InputSelect } from "src/components/input/input-select";
 import { InputTextarea } from "src/components/input/input-textarea";
 import { ButtonComponent, ButtonOutlineComponent } from "src/components/button";
+import normalImage from "src/assets/images/normal.jpg";
 
 export function PatientDetailMedicalRecord() {
   const navigate = useNavigate();
@@ -113,7 +114,8 @@ export function PatientDetailMedicalRecord() {
       </div>
 
       <div className="mt-4 w-11/12">
-        <img src={data?.medicalRecord?.image || "-"} />
+        {/* <img src={data?.medicalRecord?.image || "-"} /> */}
+        <img src={normalImage} className="w-full" />
       </div>
 
       <div className="mt-4 w-11/12">

@@ -3,6 +3,7 @@ import { FiArrowLeft, FiHome } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { MedicalRecordServices } from "src/services/MedicalRecordServices";
+import normalImage from "src/assets/images/normal.jpg";
 
 export function PatientMedicalRecord() {
   const navigate = useNavigate();
@@ -65,7 +66,7 @@ function MedicalRecordComponent({ data, callback }) {
   return (
     <div className="w-full shadow-s4 rounded-2xl overflow-hidden">
       <div className="">
-        <img src="https://st4.depositphotos.com/14431644/22076/i/450/depositphotos_220767694-stock-photo-handwriting-text-writing-example-concept.jpg" />
+        <img src={normalImage} className="w-full" />
       </div>
       <div className="p-4">
         <p className="f-p1-r text-primary-main">
