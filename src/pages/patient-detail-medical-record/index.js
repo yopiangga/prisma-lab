@@ -114,8 +114,8 @@ export function PatientDetailMedicalRecord() {
       </div>
 
       <div className="mt-4 w-11/12">
-        {/* <img src={data?.medicalRecord?.image || "-"} /> */}
-        <img src={normalImage} className="w-full" />
+        <img src={data?.medicalRecord?.image || "-"} />
+        {/* <img src={normalImage} className="w-full" /> */}
       </div>
 
       <div className="mt-4 w-11/12">

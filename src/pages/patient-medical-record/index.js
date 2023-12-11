@@ -66,7 +66,8 @@ function MedicalRecordComponent({ data, callback }) {
   return (
     <div className="w-full shadow-s4 rounded-2xl overflow-hidden">
       <div className="">
-        <img src={normalImage} className="w-full" />
+        {/* <img src={normalImage} className="w-full" /> */}
+        <img src={data?.image || "-"} className="w-full" />
       </div>
       <div className="p-4">
         <p className="f-p1-r text-primary-main">
