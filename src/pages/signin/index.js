@@ -26,7 +26,7 @@ export function SignInPage() {
     const res = await authServices.SignIn({ ...formData });
 
     if (res) {
-      document.cookie = `token=${res.token}`;
+      document.cookie = `token=${res.data.token}`;
       window.location.href = "/";
     }
   }
