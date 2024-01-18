@@ -17,7 +17,7 @@ export function HomePage() {
 
   async function fetch() {
     const res = await statisticServices.getStatistic({
-      idHospital: 1
+      idHospital: user.idHospital
     });
     setData(res.data);
   }
