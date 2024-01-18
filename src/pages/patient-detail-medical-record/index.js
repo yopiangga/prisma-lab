@@ -7,6 +7,7 @@ import { InputSelect } from "src/components/input/input-select";
 import { InputTextarea } from "src/components/input/input-textarea";
 import { ButtonComponent, ButtonOutlineComponent } from "src/components/button";
 import normalImage from "src/assets/images/normal.jpg";
+import toast from "react-hot-toast";
 
 export function PatientDetailMedicalRecord() {
   const navigate = useNavigate();
@@ -15,8 +16,7 @@ export function PatientDetailMedicalRecord() {
 
   const [editToggle, setEditToggle] = useState(false);
 
-  const [data, setData] = useState({});
-  const [tempData, setTempData] = useState({});
+const [formData, setFormData] = useState({})
 
   useEffect(() => {
     fetchData();
@@ -25,28 +25,25 @@ export function PatientDetailMedicalRecord() {
   const fetchData = async () => {
     const res = await medicalRecordServices.getMedicalRecordById({ id });
     if (res) {
-      setTempData(res.data.medicalRecord);
-      setData(res.data);
+      setFormData(res.data)
     }
   };
 
   function handleChange(e) {
-    setTempData({ ...tempData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
+
     const res = await medicalRecordServices.diagnosisByDoctor({
       id,
-      data: {
-        idPatient: tempData.id_patient,
-        idDoctor: tempData.id_doctor,
-        idHospital: tempData.id_hospital,
-        diagnosisDoctor: tempData.diagnosis_doctor,
-        description: tempData.description,
-      },
+      diagnosisDoctor: formData.diagnosisDoctor,
+      description: formData.description,
     });
+
     if (res) {
+      toast.success("Success update diagnosis");
       setEditToggle(false);
       fetchData();
     }
@@ -65,8 +62,8 @@ export function PatientDetailMedicalRecord() {
               <InputSelect
                 color="dark"
                 label={"Type Stroke"}
-                name="diagnosis_doctor"
-                value={tempData.diagnosis_doctor}
+                name="diagnosisDoctor"
+                value={formData.diagnosisDoctor}
                 handleChange={handleChange}
                 options={[
                   { label: "Hemorrhagic", value: "hemorrhagic" },
@@ -80,7 +77,7 @@ export function PatientDetailMedicalRecord() {
                 color="dark"
                 label={"Description"}
                 name={"description"}
-                value={tempData.description}
+                value={formData.description}
                 handleChange={handleChange}
               />
             </div>
@@ -114,23 +111,27 @@ export function PatientDetailMedicalRecord() {
       </div>
 
       <div className="mt-4 w-11/12">
-        <img src={data?.medicalRecord?.image || "-"} className="w-full" />
-        {/* <img src={normalImage} className="w-full" /> */}
+        <img src={formData.image} className="w-full" />
       </div>
 
       <div className="mt-4 w-11/12">
-        <div className="flex justify-between items-center">
+        {
+          formData.diagnosisDoctor == null ?
+          <div className="flex justify-between items-center">
           <div>
-            <h4 className="text-black f-p1-r font-bold mb-2">
-              {data?.medicalRecord?.diagnosis_ai || "-"}
+            <h4 className="text-black f-p1-r font-bold mb-2 uppercase">
+              {formData.diagnosisAI}
             </h4>
             <p className="text-slate-400 f-p2-r">AI Prediction</p>
           </div>
         </div>
+        :
+        null
+        }
         <div className="flex justify-between items-center mt-4">
           <div>
-            <h4 className="text-black f-p1-r font-bold mb-2">
-              {data?.medicalRecord?.diagnosis_doctor || "-"}
+            <h4 className="text-black f-p1-r font-bold mb-2 uppercase">
+              {formData.diagnosisDoctor}
             </h4>
             <p className="text-slate-400 f-p2-r">Diagnosis by Doctor</p>
           </div>
@@ -149,35 +150,35 @@ export function PatientDetailMedicalRecord() {
 
       <div className="mt-4 border-t border-b border-slate-200 w-full flex justify-center py-6">
         <h4 className="f-p1-r w-11/12">
-          <button onClick={() => {}} className="text-primary-main">
+          <a href={formData.image} className="text-primary-main">
             Download
-          </button>{" "}
+          </a>{" "}
           image CT Scan result
         </h4>
       </div>
 
       <div className="mt-4 w-11/12 flex flex-col gap-4">
-        <ListLabel label="Doctor" value={data?.doctor?.name} />
-        <ListLabel label="Hospital" value={data?.hospital?.name} />
-        <ListLabel label="Patient" value={data?.patient?.name} />
+        <ListLabel label="Doctor" value={formData?.doctor} />
+        <ListLabel label="Hospital" value={formData?.hospital} />
+        <ListLabel label="Patient" value={formData?.patient} />
         <ListLabel
           label="Time"
-          value={new Date(data?.medicalRecord?.created_at).toLocaleDateString(
+          value={new Date(formData.createdAt).toLocaleDateString(
             "en-GB",
-            {
+            { hour: "numeric", minute: "numeric", second: "numeric",
               day: "numeric",
               month: "long",
               year: "numeric",
             }
           )}
         />
-        <ListLabel label="Note" value={data?.medicalRecord?.note || "-"} />
+        <ListLabel label="Note" value={formData.description} />
       </div>
 
       <div className="mt-6 w-11/12">
         <button
           onClick={() => {
-            navigate("/medical-record/patient/" + data?.patient?.id);
+            navigate("/medical-record/patient/" + formData.idPatient);
           }}
           className="py-3 px-5 bg-primary-main border border-primary-main rounded-full f-p1-m text-white w-full"
         >

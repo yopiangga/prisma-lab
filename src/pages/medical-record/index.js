@@ -21,7 +21,6 @@ export function MedicalRecordPage() {
   const fetchData = async () => {
     const res = await medicalRecordServices.getMedicalRecords();
     if (res) {
-      console.log(res.data);
       setData(res.data);
     }
   };
@@ -62,16 +61,16 @@ export function MedicalRecordPage() {
         <h4 className="text-black text-sm font-bold mb-2">List Patients</h4>
         {data.map((e, i) => {
           if (
-            (toggle == 1 && e.diagnosis_doctor == "") ||
-            (toggle == 2 && e.diagnosis_doctor != "")
+            (toggle == 1 && e.diagnosisDoctor == null) ||
+            (toggle == 2 && e.diagnosisDoctor != null)
           )
             return (
               <PatientComponent
                 key={i}
                 data={{
                   id: e.id,
-                  name: e.patient_name,
-                  status: e.diagnosis_ai,
+                  name: e.patient,
+                  status: toggle == 1 ? e.diagnosisAI : e.diagnosisDoctor,
                 }}
                 callback={(data) => {
                   navigate("/medical-record/" + data.id);
@@ -80,19 +79,6 @@ export function MedicalRecordPage() {
             );
         })}
 
-        {/* {data.map((e, i) => (
-          <PatientComponent
-            key={i}
-            data={{
-              id: e.id,
-              name: e.patient_name,
-              status: e.diagnosis_ai,
-            }}
-            callback={(data) => {
-              navigate("/medical-record/" + data.id);
-            }}
-          />
-        ))} */}
       </div>
 
       <br />
@@ -119,7 +105,7 @@ const PatientComponent = ({ data, callback }) => {
       </div>
       <div className="w-full text-left">
         <h4 className="text-black f-p1-m font-bold">{data.name}</h4>
-        <h4 className="text-black f-p2-r">{data.diagnosis_ai || "-"}</h4>
+        <h4 className="text-black f-p2-r">{data.status}</h4>
       </div>
     </button>
   );

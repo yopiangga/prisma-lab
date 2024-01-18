@@ -70,11 +70,15 @@ export class MedicalRecordServices {
     }
   }
 
-  async diagnosisByDoctor({ id, data }) {
+  async diagnosisByDoctor({ id, diagnosisDoctor, description }) {
     try {
       const res = await axios.put(
-        `${baseUrl}/medical-records/diagnosis-by-doctor/${id}`,
-        data,
+        `${baseUrl}/medical-records/diagnosis-by-doctor`,
+        {
+          id,
+          diagnosisDoctor: diagnosisDoctor,
+          description,  
+        },
         { headers }
       );
       if (res.status === 200) {
