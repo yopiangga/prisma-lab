@@ -22,7 +22,6 @@ export function PatientMedicalRecord() {
       id,
     });
     if (res) {
-      console.log(res.data);
       setData(res.data);
     }
   };
@@ -31,7 +30,7 @@ export function PatientMedicalRecord() {
     <div className="min-h-screen flex flex-col items-center">
       <div className="w-full">
         <NavbarComponent
-          title={data?.patient?.name}
+          title={data[0].patient}
           type="dark"
           leftIcon={FiArrowLeft}
           handleLeft={() => {
@@ -45,7 +44,7 @@ export function PatientMedicalRecord() {
       </div>
 
       <div className="w-11/12 mt-4 flex flex-col gap-4">
-        {data?.medicalRecords.map((item) => (
+        {data && data.map((item) => (
           <MedicalRecordComponent
             data={item}
             callback={(e) => {
@@ -67,13 +66,13 @@ function MedicalRecordComponent({ data, callback }) {
     <div className="w-full shadow-s4 rounded-2xl overflow-hidden">
       <div className="">
         {/* <img src={normalImage} className="w-full" /> */}
-        <img src={data?.image || "-"} className="w-full" />
+        <img src={data.image} className="w-full" />
       </div>
       <div className="p-4">
         <p className="f-p1-r text-primary-main">
           {
             // tanggal
-            new Date(data.created_at).toLocaleDateString("en-US", {
+            new Date(data.createdAt).toLocaleDateString("en-US", {
               weekday: "long",
               year: "numeric",
               month: "long",
@@ -81,18 +80,18 @@ function MedicalRecordComponent({ data, callback }) {
             })
           }
         </p>
-        <h3 className="f-h3 mt-2">
-          {data.diagnosis_doctor == ""
+        <h3 className="f-h3 mt-2 uppercase">
+          {data.diagnosisDoctor == ""
             ? "Un-Classified"
-            : data.diagnosis_doctor}
+            : data.diagnosisDoctor}
         </h3>
         <p className="mt-2 f-p2-r">{data.description ?? "-"}</p>
         <div className="grid grid-cols-2 gap-2 mt-2">
-          <h4 className="f-p2-m text-primary-main">
-            AI: {data.diagnosis_ai ?? "-"}
+          <h4 className="f-p2-m uppercase">
+            AI: <span className="text-primary-main">{data.diagnosisAI ?? "-"}</span>
           </h4>
-          <h4 className="f-p2-m text-primary-main">
-            Doctor: {data.diagnosis_doctor ?? "-"}
+          <h4 className="f-p2-m uppercase">
+            Doctor: <span className="text-primary-main">{data.diagnosisDoctor ?? "-"}</span>
           </h4>
         </div>
       </div>
