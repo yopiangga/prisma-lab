@@ -3,7 +3,6 @@ import { FiArrowLeft, FiHome } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { MedicalRecordServices } from "src/services/MedicalRecordServices";
-import normalImage from "src/assets/images/normal.jpg";
 
 export function PatientMedicalRecord() {
   const navigate = useNavigate();

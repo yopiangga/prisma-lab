@@ -1,50 +1,26 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import imageUser from "src/assets/icons/avatar.png";
 import iconUser from "src/assets/icons/user.png";
 import { BottomNavbarComponent } from "src/components/navbar/BottomNavbarComponent";
 import { UserContext } from "src/context/UserContext";
+import { StatisticServices } from "src/services/StatisticServices";
 
 export function HomePage() {
   const { user } = useContext(UserContext);
+  const statisticServices = new StatisticServices();
 
-  const data = [
-    {
-      id: 1,
-      title: "Total Pateints",
-      subTitle: "06 November 2023",
-      value: 2985,
-    },
-    {
-      id: 2,
-      title: "Normal Pateint",
-      subTitle: "06 November 2023",
-      value: 956,
-    },
-    {
-      id: 3,
-      title: "Stroke Ischemic",
-      subTitle: "06 November 2023",
-      value: 1267,
-    },
-    {
-      id: 4,
-      title: "Stroke Hemorrhagic",
-      subTitle: "06 November 2023",
-      value: 956,
-    },
-    {
-      id: 5,
-      title: "Classified",
-      subTitle: "06 November 2023",
-      value: 956,
-    },
-    {
-      id: 6,
-      title: "Un-Classified",
-      subTitle: "06 November 2023",
-      value: 956,
-    },
-  ];
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    fetch()
+  }, []);
+
+  async function fetch() {
+    const res = await statisticServices.getStatistic({
+      idHospital: 1
+    });
+    setData(res.data);
+  }
 
   return (
     <div className="min-h-screen">
@@ -76,9 +52,6 @@ export function HomePage() {
           <BadgeComponent title="Daily" status={false} />
           <BadgeComponent title="Weekly" status={false} />
           <BadgeComponent title="Monthly" status={false} />
-          <BadgeComponent title="Daily" status={false} />
-          <BadgeComponent title="Weekly" status={false} />
-          <BadgeComponent title="Monthly" status={false} />
         </div>
       </div>
 
@@ -88,32 +61,58 @@ export function HomePage() {
             Statistical classification of stroke patients
           </h4>
           <h4 className="text-black text-sm text-center mt-1">
-            Total Patients
+            Total Patients (Diagnosed)
           </h4>
           <h4 className="text-black text-3xl font-bold text-center mt-2">
-            2,985
+            {data.totalDiagnosed}
           </h4>
 
-          <div className="w-full flex flex-row mt-4">
-            <ChartComponent title="Normal" color="#6B4EFF" percent={30} />
-            <ChartComponent title="Ischemic" color="#FFB323" percent={40} />
-            <ChartComponent title="Hemorrhagic" color="#C5341B" percent={30} />
+          <div className="w-full flex flex-row mt-4 justify-center">
+            <ChartComponent title="Normal" color="#6B4EFF" percent={
+              data.totalNormal / data.totalDiagnosed * 100
+            } />
+            <ChartComponent title="Ischemic" color="#FFB323" percent={
+              data.totalIschemic / data.totalDiagnosed * 100
+            } />
+            <ChartComponent title="Hemorrhagic" color="#C5341B" percent={
+              data.totalHemorrhagic / data.totalDiagnosed * 100
+            } />
           </div>
         </div>
       </div>
 
       <div className="mt-5 px-4 grid grid-cols-2 gap-3">
-        {data.map((item, index) => {
-          return (
-            <CardComponent
-              key={index}
-              id={item.id}
-              title={item.title}
-              subTitle={item.subTitle}
-              value={item.value}
+      <CardComponent
+              title={"Total Patients"}
+              subTitle={""}
+              value={data.totalPatient}
             />
-          );
-        })}
+            <CardComponent
+              title={"Normal Patients"}
+              subTitle={""}
+              value={data.totalNormal}
+            />
+            <CardComponent
+              title={"Ischemic Patients"}
+              subTitle={""}
+              value={data.totalIschemic}
+            />
+            <CardComponent
+              title={"Hemorrhagic Patients"}
+              subTitle={""}
+              value={ data.totalHemorrhagic}
+            />
+            <CardComponent
+              title={"Classified"}
+              subTitle={""}
+              value={data.totalDiagnosed}
+            />
+            <CardComponent
+              title={"Un-Classified"}
+              subTitle={""}
+              value={data.totalUnDiagnosed}
+            />
+        
       </div>
 
       <br />
@@ -164,7 +163,7 @@ const BadgeComponent = ({ title, status, callback }) => {
 
 const ChartComponent = ({ title, color, percent }) => {
   return (
-    <div className="" style={{ width: `${percent}%` }}>
+    <div className="overflow-hidden" style={{ width: `${percent}%` }}>
       <h4 className="text-center font-bold text-lg" style={{ color: color }}>
         {percent}%
       </h4>
