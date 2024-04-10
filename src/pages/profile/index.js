@@ -69,7 +69,7 @@ export function MyProfilePage() {
 
             <button
               onClick={() => {
-                navigate("/my-profile/edit");
+                navigate("/profile/me/edit");
               }}
               className="f-p2-r bg-primary-main mt-3 py-1 px-4 w-fit rounded-full text-white"
             >

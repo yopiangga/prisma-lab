@@ -5,6 +5,7 @@ import { MedicalRecordPage } from "src/pages/medical-record";
 import { PatientDetailMedicalRecord } from "src/pages/patient-detail-medical-record";
 import { PatientMedicalRecord } from "src/pages/patient-medical-record";
 import { MyProfilePage } from "src/pages/profile";
+import { EditProfilePage } from "src/pages/profile/edit";
 import { StartPage } from "src/pages/start";
 
 export default function DoctorRouterPage() {
@@ -23,6 +24,7 @@ export default function DoctorRouterPage() {
             element={<PatientDetailMedicalRecord />}
           />
           <Route path="/profile/me" element={<MyProfilePage />} />
+          <Route path="/profile/me/edit" element={<EditProfilePage />} />
 
           <Route path="*" element={<StartPage />} exact />
         </Routes>
