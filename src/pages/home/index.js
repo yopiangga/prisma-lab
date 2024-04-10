@@ -12,12 +12,12 @@ export function HomePage() {
   const [data, setData] = useState({});
 
   useEffect(() => {
-    fetch()
+    fetch();
   }, []);
 
   async function fetch() {
     const res = await statisticServices.getStatistic({
-      idHospital: user.idHospital
+      idHospital: user.idHospital,
     });
     setData(res.data);
   }
@@ -68,58 +68,63 @@ export function HomePage() {
           </h4>
 
           <div className="w-full flex flex-row mt-4 justify-center">
-            <ChartComponent title="Normal" color="#6B4EFF" percent={
-              data.totalNormal / data.totalDiagnosed * 100
-            } />
-            <ChartComponent title="Ischemic" color="#FFB323" percent={
-              data.totalIschemic / data.totalDiagnosed * 100
-            } />
-            <ChartComponent title="Hemorrhagic" color="#C5341B" percent={
-              data.totalHemorrhagic / data.totalDiagnosed * 100
-            } />
+            <ChartComponent
+              title="Normal"
+              color="#6B4EFF"
+              percent={(data.totalNormal / data.totalDiagnosed) * 100}
+            />
+            <ChartComponent
+              title="Ischemic"
+              color="#FFB323"
+              percent={(data.totalIschemic / data.totalDiagnosed) * 100}
+            />
+            <ChartComponent
+              title="Hemorrhagic"
+              color="#C5341B"
+              percent={(data.totalHemorrhagic / data.totalDiagnosed) * 100}
+            />
           </div>
         </div>
       </div>
 
       <div className="mt-5 px-4 grid grid-cols-2 gap-3">
-      <CardComponent
-              title={"Total Patients"}
-              subTitle={""}
-              value={data.totalPatient}
-            />
-            <CardComponent
-              title={"Normal Patients"}
-              subTitle={""}
-              value={data.totalNormal}
-            />
-            <CardComponent
-              title={"Ischemic Patients"}
-              subTitle={""}
-              value={data.totalIschemic}
-            />
-            <CardComponent
-              title={"Hemorrhagic Patients"}
-              subTitle={""}
-              value={ data.totalHemorrhagic}
-            />
-            <CardComponent
-              title={"Classified"}
-              subTitle={""}
-              value={data.totalDiagnosed}
-            />
-            <CardComponent
-              title={"Un-Classified"}
-              subTitle={""}
-              value={data.totalUnDiagnosed}
-            />
-        
+        <CardComponent
+          title={"Total Patients"}
+          subTitle={""}
+          value={data.totalPatient}
+        />
+        <CardComponent
+          title={"Normal Patients"}
+          subTitle={""}
+          value={data.totalNormal}
+        />
+        <CardComponent
+          title={"Ischemic Patients"}
+          subTitle={""}
+          value={data.totalIschemic}
+        />
+        <CardComponent
+          title={"Hemorrhagic Patients"}
+          subTitle={""}
+          value={data.totalHemorrhagic}
+        />
+        <CardComponent
+          title={"Classified"}
+          subTitle={""}
+          value={data.totalDiagnosed}
+        />
+        <CardComponent
+          title={"Un-Classified"}
+          subTitle={""}
+          value={data.totalUnDiagnosed}
+        />
       </div>
 
       <br />
       <br />
       <br />
 
-      <div className="w-full fixed bottom-0">
+      <div className="fixed bottom-0 left-0 right-0">
         <BottomNavbarComponent />
       </div>
     </div>

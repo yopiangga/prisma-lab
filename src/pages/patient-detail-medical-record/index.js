@@ -46,8 +46,6 @@ export function PatientDetailMedicalRecord() {
       slideRef.current.style.transform = `translateX(-${
         currentSlide * slideWidth
       }px)`;
-
-      console.log(slideWidth);
     };
 
     window.addEventListener("resize", handleResize);

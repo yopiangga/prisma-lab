@@ -8,7 +8,7 @@ export function BottomNavbarComponent(props) {
   const isProfile = path == "/medical-record";
 
   return (
-    <div className="w-full max-w-screen-sm bg-white shadow-s1 flex justify-around p-1 mx-auto relative">
+    <div className="w-full max-w-screen-sm shadow-s1 flex justify-around p-1 mx-auto relative">
       <MenuCard
         icon={FiHome}
         title="Dashboard"
@@ -33,8 +33,8 @@ function MenuCard(props) {
   return (
     <button
       onClick={props.handleClick}
-      className={`flex flex-col items-center justify-center rounded-lg p-2 w-full relative z-20 ${
-        props.active ? "bg-white text-primary-main" : "text-slate-500"
+      className={`flex flex-col items-center justify-center rounded-lg p-2 w-full relative z-20 bg-white ${
+        props.active ? "text-primary-main" : "text-slate-500"
       }`}
     >
       <props.icon size={24} />

@@ -78,14 +78,13 @@ export function MedicalRecordPage() {
               />
             );
         })}
-
       </div>
 
       <br />
       <br />
       <br />
 
-      <div className="w-full fixed bottom-0">
+      <div className="fixed bottom-0 left-0 right-0">
         <BottomNavbarComponent />
       </div>
     </div>
