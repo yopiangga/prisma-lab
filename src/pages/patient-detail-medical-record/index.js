@@ -90,7 +90,7 @@ export function PatientDetailMedicalRecord() {
   return (
     <div className="min-h-screen flex flex-col items-center relative">
       {editToggle && (
-        <div className="fixed w-full h-full bg-black bg-opacity-40 flex justify-center items-center">
+        <div className="fixed z-10 w-full h-full bg-black bg-opacity-40 flex justify-center items-center">
           <form
             onSubmit={handleSubmit}
             className="bg-white rounded-lg w-11/12 p-5"
@@ -164,7 +164,7 @@ export function PatientDetailMedicalRecord() {
 
         <button
           type="button"
-          className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+          className="absolute top-0 start-0 z-0 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
           onClick={handlePrev}
         >
           <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
@@ -173,7 +173,7 @@ export function PatientDetailMedicalRecord() {
         </button>
         <button
           type="button"
-          className="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+          className="absolute top-0 end-0 z-0 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
           onClick={handleNext}
         >
           <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
@@ -215,7 +215,18 @@ export function PatientDetailMedicalRecord() {
 
       <div className="mt-4 border-t border-b border-slate-200 w-full flex justify-center py-6">
         <h4 className="f-p1-r w-11/12">
-          <a href={formData.image} className="text-primary-main">
+          <a
+            href={formData.image}
+            download={
+              formData.nikPatient +
+              "_" +
+              formData.patient +
+              "_" +
+              formData.id +
+              ".jpg"
+            }
+            className="text-primary-main"
+          >
             Download
           </a>{" "}
           image CT Scan result

@@ -3,6 +3,7 @@ import { FiArrowLeft, FiHome } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { MedicalRecordServices } from "src/services/MedicalRecordServices";
+import LoadComponent from "src/components/load";
 
 export function PatientMedicalRecord() {
   const navigate = useNavigate();
@@ -25,11 +26,15 @@ export function PatientMedicalRecord() {
     }
   };
 
+  if (!data) {
+    return <LoadComponent />;
+  }
+
   return (
     <div className="min-h-screen flex flex-col items-center">
       <div className="w-full">
         <NavbarComponent
-          title={data[0].patient}
+          title={data[0]?.patient}
           type="dark"
           leftIcon={FiArrowLeft}
           handleLeft={() => {
@@ -43,14 +48,15 @@ export function PatientMedicalRecord() {
       </div>
 
       <div className="w-11/12 mt-4 flex flex-col gap-4">
-        {data && data.map((item) => (
-          <MedicalRecordComponent
-            data={item}
-            callback={(e) => {
-              navigate(`/medical-record/${id}`);
-            }}
-          />
-        ))}
+        {data &&
+          data.map((item) => (
+            <MedicalRecordComponent
+              data={item}
+              callback={(e) => {
+                navigate(`/medical-record/${id}`);
+              }}
+            />
+          ))}
       </div>
 
       <br />
@@ -80,17 +86,19 @@ function MedicalRecordComponent({ data, callback }) {
           }
         </p>
         <h3 className="f-h3 mt-2 uppercase">
-          {data.diagnosisDoctor == ""
-            ? "Un-Classified"
-            : data.diagnosisDoctor}
+          {data.diagnosisDoctor == "" ? "Un-Classified" : data.diagnosisDoctor}
         </h3>
         <p className="mt-2 f-p2-r">{data.description ?? "-"}</p>
         <div className="grid grid-cols-2 gap-2 mt-2">
           <h4 className="f-p2-m uppercase">
-            AI: <span className="text-primary-main">{data.diagnosisAI ?? "-"}</span>
+            AI:{" "}
+            <span className="text-primary-main">{data.diagnosisAI ?? "-"}</span>
           </h4>
           <h4 className="f-p2-m uppercase">
-            Doctor: <span className="text-primary-main">{data.diagnosisDoctor ?? "-"}</span>
+            Doctor:{" "}
+            <span className="text-primary-main">
+              {data.diagnosisDoctor ?? "-"}
+            </span>
           </h4>
         </div>
       </div>
