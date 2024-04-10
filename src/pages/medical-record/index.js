@@ -5,17 +5,20 @@ import { useNavigate } from "react-router-dom";
 import { NavbarComponent } from "src/components/navbar";
 import { BottomNavbarComponent } from "src/components/navbar/BottomNavbarComponent";
 import { MedicalRecordServices } from "src/services/MedicalRecordServices";
+import LoadComponent from "src/components/load";
 
 export function MedicalRecordPage() {
   const navigate = useNavigate();
   const medicalRecordServices = new MedicalRecordServices();
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
 
   const [toggle, setToggle] = useState(1);
 
   useEffect(() => {
-    fetchData();
+    setTimeout(() => {
+      fetchData();
+    }, 0);
   }, []);
 
   const fetchData = async () => {
@@ -59,25 +62,30 @@ export function MedicalRecordPage() {
 
       <div className="px-4 mt-4">
         <h4 className="text-black text-sm font-bold mb-2">List Patients</h4>
-        {data.map((e, i) => {
-          if (
-            (toggle == 1 && e.diagnosisDoctor == null) ||
-            (toggle == 2 && e.diagnosisDoctor != null)
-          )
-            return (
-              <PatientComponent
-                key={i}
-                data={{
-                  id: e.id,
-                  name: e.patient,
-                  status: toggle == 1 ? e.diagnosisAI : e.diagnosisDoctor,
-                }}
-                callback={(data) => {
-                  navigate("/medical-record/" + data.id);
-                }}
-              />
-            );
-        })}
+
+        {!data ? (
+          <LoadComponent />
+        ) : (
+          data.map((e, i) => {
+            if (
+              (toggle == 1 && e.diagnosisDoctor == null) ||
+              (toggle == 2 && e.diagnosisDoctor != null)
+            )
+              return (
+                <PatientComponent
+                  key={i}
+                  data={{
+                    id: e.id,
+                    name: e.patient,
+                    status: toggle == 1 ? e.diagnosisAI : e.diagnosisDoctor,
+                  }}
+                  callback={(data) => {
+                    navigate("/medical-record/" + data.id);
+                  }}
+                />
+              );
+          })
+        )}
       </div>
 
       <br />
@@ -104,7 +112,7 @@ const PatientComponent = ({ data, callback }) => {
       </div>
       <div className="w-full text-left">
         <h4 className="text-black f-p1-m font-bold">{data.name}</h4>
-        <h4 className="text-black f-p2-r">{data.status}</h4>
+        <h4 className="text-black f-p2-r uppercase">{data.status}</h4>
       </div>
     </button>
   );

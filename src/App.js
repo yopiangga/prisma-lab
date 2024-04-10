@@ -22,7 +22,7 @@ function UserManager() {
   const userServices = new UserServices();
 
   const { user, setUser } = useContext(UserContext);
-  const [load, setLoad] = useState(false);
+  const [load, setLoad] = useState(true);
 
   useEffect(() => {
     fetch();
@@ -41,7 +41,6 @@ function UserManager() {
         setUser(null);
       }
     }
-
     setLoad(false);
   }
 

@@ -12,13 +12,16 @@ export function HomePage() {
   const [data, setData] = useState({});
 
   useEffect(() => {
-    fetch();
+    setTimeout(() => {
+      fetch();
+    }, 0);
   }, []);
 
   async function fetch() {
     const res = await statisticServices.getStatistic({
       idHospital: user.idHospital,
     });
+
     setData(res.data);
   }
 
@@ -67,23 +70,25 @@ export function HomePage() {
             {data.totalDiagnosed}
           </h4>
 
-          <div className="w-full flex flex-row mt-4 justify-center">
-            <ChartComponent
-              title="Normal"
-              color="#6B4EFF"
-              percent={(data.totalNormal / data.totalDiagnosed) * 100}
-            />
-            <ChartComponent
-              title="Ischemic"
-              color="#FFB323"
-              percent={(data.totalIschemic / data.totalDiagnosed) * 100}
-            />
-            <ChartComponent
-              title="Hemorrhagic"
-              color="#C5341B"
-              percent={(data.totalHemorrhagic / data.totalDiagnosed) * 100}
-            />
-          </div>
+          {data.totalDiagnosed > 0 ? (
+            <div className="w-full flex flex-row mt-4 justify-center">
+              <ChartComponent
+                title="Normal"
+                color="#6B4EFF"
+                percent={(data.totalNormal / data.totalDiagnosed) * 100}
+              />
+              <ChartComponent
+                title="Ischemic"
+                color="#FFB323"
+                percent={(data.totalIschemic / data.totalDiagnosed) * 100}
+              />
+              <ChartComponent
+                title="Hemorrhagic"
+                color="#C5341B"
+                percent={(data.totalHemorrhagic / data.totalDiagnosed) * 100}
+              />
+            </div>
+          ) : null}
         </div>
       </div>
 
