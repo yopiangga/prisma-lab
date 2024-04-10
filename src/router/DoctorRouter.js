@@ -26,7 +26,7 @@ export default function DoctorRouterPage() {
           <Route path="/profile/me" element={<MyProfilePage />} />
           <Route path="/profile/me/edit" element={<EditProfilePage />} />
 
-          <Route path="*" element={<StartPage />} exact />
+          <Route path="*" element={<HomePage />} exact />
         </Routes>
       </BrowserRouter>
     </UserLayout>

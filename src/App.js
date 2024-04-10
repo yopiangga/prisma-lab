@@ -55,6 +55,6 @@ function UserManager() {
   } else if (user.role == "doctor") {
     return <DoctorRouterPage />;
   } else {
-    return <h1>Something went wrong</h1>;
+    return <AuthRouterPage />;
   }
 }
