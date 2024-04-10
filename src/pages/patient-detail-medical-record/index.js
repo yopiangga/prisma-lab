@@ -1,8 +1,14 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { NavbarComponent } from "src/components/navbar";
-import { FiArrowLeft, FiHome } from "react-icons/fi";
+import {
+  FiArrowLeft,
+  FiArrowRight,
+  FiChevronLeft,
+  FiChevronRight,
+  FiHome,
+} from "react-icons/fi";
 import { MedicalRecordServices } from "src/services/MedicalRecordServices";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { InputSelect } from "src/components/input/input-select";
 import { InputTextarea } from "src/components/input/input-textarea";
 import { ButtonComponent, ButtonOutlineComponent } from "src/components/button";
@@ -16,16 +22,50 @@ export function PatientDetailMedicalRecord() {
 
   const [editToggle, setEditToggle] = useState(false);
 
-const [formData, setFormData] = useState({})
+  const [formData, setFormData] = useState({});
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const slideRef = useRef(null);
+  const [slides, setSlides] = useState([]);
+
+  const handleNext = () => {
+    setCurrentSlide(currentSlide === slides.length - 1 ? 0 : currentSlide + 1);
+  };
+
+  const handlePrev = () => {
+    setCurrentSlide(currentSlide === 0 ? slides.length - 1 : currentSlide - 1);
+  };
 
   useEffect(() => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      const slideWidth = slideRef.current.offsetWidth / slides.length;
+      slideRef.current.style.transform = `translateX(-${
+        currentSlide * slideWidth
+      }px)`;
+
+      console.log(slideWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, [currentSlide, slides]);
+
   const fetchData = async () => {
     const res = await medicalRecordServices.getMedicalRecordById({ id });
     if (res) {
-      setFormData(res.data)
+      setFormData(res.data);
+
+      setSlides([
+        <img src={res.data.image} className="w-full h-full" />,
+        <img src={res.data.segmented} className="w-full h-full" />,
+      ]);
     }
   };
 
@@ -110,24 +150,51 @@ const [formData, setFormData] = useState({})
         />
       </div>
 
-      <div className="mt-4 w-11/12">
-        <img src={formData.image} className="w-full" />
+      <div className="carousel relative w-screen">
+        <div className="relative w-full h-96 overflow-hidden">
+          <div
+            ref={slideRef}
+            className="carousel-inner flex transition duration-500 ease-in-out absolute"
+          >
+            {slides.map((slide, index) => (
+              <div key={index} className="slide w-screen">
+                {slide}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <button
+          type="button"
+          className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+          onClick={handlePrev}
+        >
+          <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+            <FiChevronLeft />
+          </span>
+        </button>
+        <button
+          type="button"
+          className="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+          onClick={handleNext}
+        >
+          <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+            <FiChevronRight />
+          </span>
+        </button>
       </div>
 
       <div className="mt-4 w-11/12">
-        {
-          formData.diagnosisDoctor == null ?
+        {formData.diagnosisDoctor == null ? (
           <div className="flex justify-between items-center">
-          <div>
-            <h4 className="text-black f-p1-r font-bold mb-2 uppercase">
-              {formData.diagnosisAI}
-            </h4>
-            <p className="text-slate-400 f-p2-r">AI Prediction</p>
+            <div>
+              <h4 className="text-black f-p1-r font-bold mb-2 uppercase">
+                {formData.diagnosisAI}
+              </h4>
+              <p className="text-slate-400 f-p2-r">AI Prediction</p>
+            </div>
           </div>
-        </div>
-        :
-        null
-        }
+        ) : null}
         <div className="flex justify-between items-center mt-4">
           <div>
             <h4 className="text-black f-p1-r font-bold mb-2 uppercase">
@@ -163,14 +230,14 @@ const [formData, setFormData] = useState({})
         <ListLabel label="Patient" value={formData?.patient} />
         <ListLabel
           label="Time"
-          value={new Date(formData.createdAt).toLocaleDateString(
-            "en-GB",
-            { hour: "numeric", minute: "numeric", second: "numeric",
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            }
-          )}
+          value={new Date(formData.createdAt).toLocaleDateString("en-GB", {
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          })}
         />
         <ListLabel label="Note" value={formData.description} />
       </div>
