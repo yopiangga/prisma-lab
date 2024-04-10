@@ -14,7 +14,9 @@ export function PatientMedicalRecord() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    fetchData();
+    setTimeout(() => {
+      fetchData();
+    }, 0);
   }, []);
 
   const fetchData = async () => {
