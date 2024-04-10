@@ -37,7 +37,9 @@ export function PatientDetailMedicalRecord() {
   };
 
   useEffect(() => {
-    fetchData();
+    setTimeout(() => {
+      fetchData();
+    }, 0);
   }, []);
 
   useEffect(() => {
@@ -74,9 +76,15 @@ export function PatientDetailMedicalRecord() {
   async function handleSubmit(e) {
     e.preventDefault();
 
+    let tempDiagnosisDoctor = formData.diagnosisDoctor;
+
+    if (tempDiagnosisDoctor == null) {
+      tempDiagnosisDoctor = "hemorrhagic";
+    }
+
     const res = await medicalRecordServices.diagnosisByDoctor({
       id,
-      diagnosisDoctor: formData.diagnosisDoctor,
+      diagnosisDoctor: tempDiagnosisDoctor,
       description: formData.description,
     });
 
@@ -103,6 +111,7 @@ export function PatientDetailMedicalRecord() {
                 name="diagnosisDoctor"
                 value={formData.diagnosisDoctor}
                 handleChange={handleChange}
+                placeholder="Select Type Stroke"
                 options={[
                   { label: "Hemorrhagic", value: "hemorrhagic" },
                   { label: "Ischemic", value: "ischemic" },
@@ -234,8 +243,11 @@ export function PatientDetailMedicalRecord() {
       </div>
 
       <div className="mt-4 w-11/12 flex flex-col gap-4">
+        <ListLabel label="ID Record" value={formData?.id} />
         <ListLabel label="Doctor" value={formData?.doctor} />
         <ListLabel label="Hospital" value={formData?.hospital} />
+        <ListLabel label="ID Patient" value={formData?.idPatient} />
+        <ListLabel label="NIK" value={formData?.nikPatient} />
         <ListLabel label="Patient" value={formData?.patient} />
         <ListLabel
           label="Time"
