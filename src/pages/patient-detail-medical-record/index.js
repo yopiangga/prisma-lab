@@ -148,14 +148,14 @@ export function PatientDetailMedicalRecord() {
         />
       </div>
 
-      <div className="carousel relative w-screen">
+      <div className="carousel relative w-full">
         <div className="relative w-full h-96 overflow-hidden">
           <div
             ref={slideRef}
             className="carousel-inner flex transition duration-500 ease-in-out absolute"
           >
             {slides.map((slide, index) => (
-              <div key={index} className="slide w-screen">
+              <div key={index} className="slide w-96">
                 {slide}
               </div>
             ))}
