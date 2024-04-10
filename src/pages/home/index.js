@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import imageUser from "src/assets/icons/avatar.png";
 import iconUser from "src/assets/icons/user.png";
 import { BottomNavbarComponent } from "src/components/navbar/BottomNavbarComponent";
@@ -6,6 +7,7 @@ import { UserContext } from "src/context/UserContext";
 import { StatisticServices } from "src/services/StatisticServices";
 
 export function HomePage() {
+  const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const statisticServices = new StatisticServices();
 
@@ -42,10 +44,16 @@ export function HomePage() {
           </p>
         </div>
         <div className="">
-          <img
-            src={user.image ?? imageUser}
-            className="w-10 h-10 rounded-full"
-          />
+          <button
+            onClick={() => {
+              navigate("/profile/me");
+            }}
+          >
+            <img
+              src={user.image ?? imageUser}
+              className="w-10 h-10 rounded-full"
+            />
+          </button>
         </div>
       </div>
 

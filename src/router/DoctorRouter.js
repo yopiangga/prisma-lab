@@ -4,6 +4,7 @@ import { HomePage } from "src/pages/home";
 import { MedicalRecordPage } from "src/pages/medical-record";
 import { PatientDetailMedicalRecord } from "src/pages/patient-detail-medical-record";
 import { PatientMedicalRecord } from "src/pages/patient-medical-record";
+import { MyProfilePage } from "src/pages/profile";
 import { StartPage } from "src/pages/start";
 
 export default function DoctorRouterPage() {
@@ -21,6 +22,7 @@ export default function DoctorRouterPage() {
             path="/medical-record/:id"
             element={<PatientDetailMedicalRecord />}
           />
+          <Route path="/profile/me" element={<MyProfilePage />} />
 
           <Route path="*" element={<StartPage />} exact />
         </Routes>
