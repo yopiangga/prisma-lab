@@ -89,18 +89,25 @@ function MedicalRecordComponent({ data, callback }) {
           {data.diagnosisDoctor == "" ? "Un-Classified" : data.diagnosisDoctor}
         </h3>
         <p className="mt-2 f-p2-r">{data.description ?? "-"}</p>
-        <div className="grid grid-cols-2 gap-2 mt-2">
-          <h4 className="f-p2-m uppercase">
-            AI:{" "}
-            <span className="text-primary-main">{data.diagnosisAI ?? "-"}</span>
-          </h4>
-          <h4 className="f-p2-m uppercase">
-            Doctor:{" "}
-            <span className="text-primary-main">
-              {data.diagnosisDoctor ?? "-"}
-            </span>
-          </h4>
+
+        <div className="mt-4 w-full flex flex-col gap-2">
+          <ListLabel label="ID Record" value={data.id} />
+          <ListLabel label="Doctor" value={data.doctor} />
+          <ListLabel label="AI Pred." value={data.diagnosisAI} />
         </div>
+      </div>
+    </div>
+  );
+}
+
+function ListLabel({ label, value }) {
+  return (
+    <div className="grid grid-cols-12">
+      <div className="col-span-3">
+        <h4 className="f-p1-r">{label}</h4>
+      </div>
+      <div className="col-span-9">
+        <p className="f-p1-r text-right">{value ?? "-"}</p>
       </div>
     </div>
   );
